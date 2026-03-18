@@ -1,0 +1,135 @@
+SELECT * FROM [Medical].[dbo].Departments;
+SELECT * FROM [Medical].[dbo].Doctors;
+SELECT * FROM [Medical].[dbo].[Patients]
+SELECT * FROM [Medical].[dbo].Appointments
+select * from [Medical].[dbo].CompletedCheckups
+
+ Create the database
+CREATE DATABASE IF NOT EXISTS medical;
+USE medical;
+
+-- Create the CompletedCheckups table
+CREATE TABLE CompletedCheckups (
+    CheckupID INT PRIMARY KEY,
+    PatientID INT,
+    DoctorID INT,
+    VisitReason VARCHAR(255),
+    CheckupDateTime DATETIME,
+    DurationMinutes INT,
+    DoctorNotes TEXT
+);
+
+INSERT INTO CompletedCheckups (CheckupID, PatientID, DoctorID, VisitReason, CheckupDateTime, DurationMinutes, DoctorNotes)
+VALUES 
+(1, 1, 1, 'Chronic Back Pain', '2026-02-15 09:00:00', 15, 'Prescribed physiotherapy and NSAIDs.'),
+(2, 10, 1, 'Seasonal Flu', '2026-02-15 09:15:00', 15, 'High fever. Advised rest and hydration.'),
+(3, 5, 1, 'Follow-up: Hypertension', '2026-02-15 09:30:00', 15, 'BP stable at 130/85.'),
+(4, 2, 2, 'Severe Migraine', '2026-02-16 10:30:00', 15, 'Triggered by stress. Prescribed darkness and rest.'),
+(5, 6, 2, 'Joint Stiffness', '2026-02-16 10:45:00', 15, 'Suspected early arthritis. Referred for X-ray.'),
+(6, 3, 11, 'Routine Cardiac Checkup', '2026-02-17 14:00:00', 15, 'ECG normal. Low-sodium diet advised.'),
+(7, 7, 11, 'Heart Palpitations', '2026-02-17 14:15:00', 15, 'Stress-related. Advised lifestyle changes.'),
+(8, 4, 3, 'Viral Fever', '2026-02-18 11:00:00', 15, 'Prescribed paracetamol 500mg.'),
+(9, 8, 3, 'Post-Op Consultation', '2026-02-20 11:15:00', 15, 'Healing well. Stitches removed.'),
+(10, 9, 1, 'Type 2 Diabetes Review', '2026-02-25 10:00:00', 15, 'HbA1c at 7.2. Adjusting Metformin dosage.');
+
+USE medical;
+
+CREATE TABLE Appointments (
+    AppointmentID INT PRIMARY KEY,
+    PatientID INT,
+    DoctorID INT,
+    ScheduledTime DATETIME,
+    Status VARCHAR(50),
+    Notes TEXT
+);
+
+INSERT INTO Appointments (AppointmentID, PatientID, DoctorID, ScheduledTime, Status, Notes)
+VALUES 
+(1, 1, 1, '2026-03-20 10:00:00', 'Scheduled', 'Fever and cold checkup - Jubilee Hills'),
+(2, 2, 2, '2026-03-20 11:30:00', 'Scheduled', 'Routine heart checkup'),
+(3, 3, 3, '2026-03-21 09:00:00', 'Confirmed', 'Child vaccination follow-up'),
+(4, 4, 5, '2026-03-21 14:00:00', 'Scheduled', 'Knee pain consultation'),
+(5, 5, 4, '2026-03-22 16:30:00', 'Scheduled', 'Migraine screening'),
+(6, 1, 1, '2026-02-18 09:30:00', 'Completed', 'Annual physical - patient in good health.'),
+(7, 2, 4, '2026-02-20 11:00:00', 'Completed', 'Migraine consultation - prescribed rest.'),
+(8, 3, 5, '2026-02-25 15:00:00', 'Completed', 'Knee physiotherapy session completed.'),
+(9, 4, 2, '2026-03-02 10:15:00', 'Completed', 'Routine ECG - results normal.'),
+(10, 5, 3, '2026-03-05 09:00:00', 'Completed', 'Vaccination for child.'),
+(11, 6, 1, '2026-03-08 10:00:00', 'Completed', 'General checkup for new resident.'),
+(12, 1, 6, '2026-03-10 11:30:00', 'Completed', 'Initial Gynecology consultation.'),
+(13, 7, 7, '2026-03-12 16:00:00', 'Completed', 'Treatment for minor skin allergy.'),
+(14, 8, 11, '2026-03-14 14:00:00', 'Completed', 'Post-surgery physiotherapy follow-up.'),
+(15, 10, 9, '2026-03-16 05:14:00', 'New', NULL);
+
+USE medical;
+
+CREATE TABLE Departments (
+    DepartmentID INT PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL
+);
+
+INSERT INTO Departments (DepartmentID, Name)
+VALUES 
+(1, 'General Medicine'),
+(2, 'Cardiology'),
+(3, 'Pediatrics'),
+(4, 'Neurology'),
+(5, 'Orthopedics'),
+(6, 'Gynecology'),
+(7, 'Dermatology'),
+(8, 'ENT'),
+(9, 'Physiotherapy');
+
+
+USE medical;
+
+CREATE TABLE Doctors (
+    DoctorID INT PRIMARY KEY,
+    FullName VARCHAR(100) NOT NULL,
+    DepartmentID INT,
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+);
+
+INSERT INTO Doctors (DoctorID, FullName, DepartmentID)
+VALUES 
+(1, 'Dr. Sandeep Reddy', 1),
+(2, 'Dr. Priyanka Rao', 2),
+(3, 'Dr. Anjali Naidu', 3),
+(4, 'Dr. Vikram Verma', 4),
+(5, 'Dr. Suresh Goud', 5),
+(6, 'Dr. Ramesh Babu', 1),
+(7, 'Dr. Sravani Lakshmi', 6),
+(8, 'Dr. Harsha Vardhan', 4),
+(9, 'Dr. Divya Bharathi', 7),
+(10, 'Dr. Murali Krishna', 8),
+(11, 'Dr. Kavitha Reddy', 9);
+
+USE medical;
+
+CREATE TABLE Patients (
+    PatientID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    DateOfBirth DATE,
+    Email VARCHAR(100),
+    Phone VARCHAR(15)
+);
+
+INSERT INTO Patients (PatientID, FirstName, LastName, DateOfBirth, Email, Phone)
+VALUES 
+(1, 'Sai', 'Teja', '1995-08-20', 'sai.teja@gmail.com', '9848012345'),
+(2, 'Lakshmi', 'Devi', '1988-03-12', 'lakshmi.d@gmail.com', '9123456789'),
+(3, 'Vikram', 'Goud', '1975-11-30', 'v.goud@gmail.com', '8008123456'),
+(4, 'Anitha', 'Reddy', '2001-01-15', 'anitha.r@gmail.com', '9988776655'),
+(5, 'Kiran', 'Kumar', '1990-06-25', 'kiran.k@gmail.com', '7702233445'),
+(6, 'Rajesh', 'Khanna', '1982-04-05', 'rajesh.k@gmail.com', '9123445566'),
+(7, 'Padma', 'Vathi', '1994-12-12', 'padma.v@gmail.com', '8877665544'),
+(8, 'Saritha', 'Rao', '1989-07-21', 'saritha.rao@gmail.com', '9000800070'),
+(9, 'Arjun', 'Prasad', '1970-01-01', 'arjun.p@gmail.com', '9988001122'),
+(10, 'kk', 'kk', '2026-03-11', 'kk@gmail.com', '7989444410');
+
+SELECT * FROM [Medical].[dbo].Departments;
+SELECT * FROM [Medical].[dbo].Doctors;
+SELECT * FROM [Medical].[dbo].[Patients]
+SELECT * FROM [Medical].[dbo].Appointments
+select * from [Medical].[dbo].CompletedCheckups
