@@ -1,0 +1,24 @@
+/* Minimal supplemental styles for the Clinic SPA */
+
+body {
+  background-color: #f8f9fa;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+#main-content {
+  min-height: 60vh;
+}
+
+/* Ensure tables inside cards don't have a rounded bottom border clash */
+.card .table {
+  margin-bottom: 0;
+}
+
+/* Badge text stays readable at small sizes */
+.badge {
+  font-size: 0.8em;
+}
